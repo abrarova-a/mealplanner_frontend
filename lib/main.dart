@@ -94,7 +94,24 @@ class _RegisterPageState extends State<RegisterPage> {
       });
 
       if (response.statusCode == 201) {
-        showDialog(context: context, builder: (_) => AlertDialog(content: Text("Registration successful")));
+
+      _username.clear();
+      _password.clear();
+      _confirmPassword.clear();
+
+        showDialog(
+          context: context, 
+          builder: (_) => AlertDialog(
+            content: Text("Registration successful"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginPage()));
+                },
+                child: const Text("Login"),
+              ),
+            ],));
       } else {
         var data = jsonDecode(response.body);
         showDialog(context: context, builder: (_) => AlertDialog(content: Text(data['error'] ?? 'Registration failed')));
